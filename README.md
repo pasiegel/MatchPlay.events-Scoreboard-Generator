@@ -1,4 +1,4 @@
-# MatchPlay.events Scoreboard Generator for OBS Display
+# MatchPlay.events Scoreboard Generator
 
 This Python script fetches tournament data from the MatchPlay.events API, processes it, and generates a clean, modern HTML scoreboard. It also saves the raw player and game data as CSV files and the final processed data as a JSON file.
 
@@ -27,7 +27,7 @@ This Python script fetches tournament data from the MatchPlay.events API, proces
 
 ## ⚙️ Configuration
 
-The script requires an API token from your MatchPlay.events account and the ID of the tournament you wish to track.
+The script requires an API token from your MatchPlay.events account and the ID of the tournament you wish to track. This step is required for both the Python script and the executable version.
 
 -   **Automatic Setup:** The first time you run the script, it will detect that `config.ini` is missing and prompt you to create it. Simply enter your API token and Tournament ID when asked.
 -   **Manual Setup:** You can create a file named `config.ini` in the same directory as the script with the following content:
@@ -43,6 +43,10 @@ The script requires an API token from your MatchPlay.events account and the ID o
 ---
 
 ## ▶️ How to Run
+
+There are two ways to run this generator: directly from the Python script (which allows for customization) or using a simple compiled executable (for Windows users).
+
+### Method 1: Running the Python Script (Recommended for customization)
 
 Once the setup is complete, simply execute the Python script from your terminal:
 
@@ -60,6 +64,17 @@ The script will perform the following actions:
 
 You will see progress messages printed in the console.
 
+### Method 2: Using the Compiled Executable (Windows)
+
+For users on Windows, a pre-compiled `.exe` file is available for convenience. This is the simplest method as it does not require Python to be installed.
+
+1.  Download the latest `matchplay_scoreboard.exe` from the project's Releases page.
+2.  Place the `.exe` file in your desired folder.
+3.  Create the `config.ini` file in the same folder as the `.exe` as described in the **Configuration** section above.
+4.  Double-click `matchplay_scoreboard.exe` to run it. A command window will briefly appear while it works.
+
+**Important Trade-off:** The primary downside of using the executable is that the HTML template is compiled into the application. This means you **cannot customize the theme or layout** of the outputted `.html` file. If you need to change the styling, you must use the Python script method.
+
 ---
 
 ## 🤖 Automating with OBS
@@ -68,20 +83,22 @@ You can configure OBS to automatically run this script whenever a specific scene
 
 **Step 1: Create a Batch File**
 
-A batch file is a simple script that tells Windows how to run your Python script.
+A batch file is a simple script that tells Windows how to run your Python script or executable.
 
 1.  Open a text editor (like Notepad).
-2.  Paste the following lines, making sure to replace the placeholder paths with the *full paths* to your Python executable and your script.
-
-    ```batch
-    @echo off
-    REM Path to your Python executable (e.g., in a virtual environment or system install)
-    C:\path\to\your\python.exe C:\path\to\your\matchplay_scoreboard.py
-    ```
-    * **To find your Python path:** Open Command Prompt and type `where python`.
-    * **To find your script path:** Navigate to your script in File Explorer, right-click, and choose "Copy as path".
-
-3.  Save the file as `run_scoreboard.bat` in the same directory as your Python script.
+2.  Paste the appropriate line below.
+    * **If using the Python script:**
+        ```batch
+        @echo off
+        REM Path to your Python executable (e.g., in a virtual environment or system install)
+        C:\path\to\your\python.exe C:\path\to\your\matchplay_scoreboard.py
+        ```
+    * **If using the `.exe`:**
+        ```batch
+        @echo off
+        C:\path\to\your\matchplay_scoreboard.exe
+        ```
+3.  Save the file as `run_scoreboard.bat` in the same directory as your script/exe.
 
 **Step 2: Configure Advanced Scene Switcher in OBS**
 
@@ -94,7 +111,7 @@ A batch file is a simple script that tells Windows how to run your Python script
     * **Execute:** Click the `...` button and navigate to the `run_scoreboard.bat` file you created in Step 1.
 5.  **Start the Plugin:** Make sure the plugin is running by clicking the "Start" button at the bottom of the plugin window.
 
-Now, every time you switch to the selected scene in OBS, the `run_scoreboard.bat` file will be executed, which in turn runs your Python script and updates the `.html` scoreboard file. Your OBS browser source will automatically reflect the changes.
+Now, every time you switch to the selected scene in OBS, the script will run and update the `.html` scoreboard file. Your OBS browser source will automatically reflect the changes.
 
 ---
 
